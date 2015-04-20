@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2015/04/08 15:11:36.000.096,=C:\Users\dangis\Documents\RAD Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>2015/04/08 15:12:31.000.935,C:\Users\dangis\Documents\RAD Studio\Projects\Unit1.dfm=C:\Users\dangis\Documents\RAD Studio\Projects\Main.dfm</Transaction>
+    <Transaction>2015/04/08 15:12:31.000.935,C:\Users\dangis\Documents\RAD Studio\Projects\Unit1.h=C:\Users\dangis\Documents\RAD Studio\Projects\Main.h</Transaction>
+    <Transaction>2015/04/08 15:12:31.000.935,C:\Users\dangis\Documents\RAD Studio\Projects\Unit1.cpp=C:\Users\dangis\Documents\RAD Studio\Projects\Main.cpp</Transaction>
+    <Transaction>2015/04/08 15:15:47.000.912,C:\Users\dangis\Documents\RAD Studio\Projects\Main.h=D:\PROJEKTANA\GRUNTO_TYRIMAS\Main.h</Transaction>
+    <Transaction>2015/04/08 15:15:47.000.912,C:\Users\dangis\Documents\RAD Studio\Projects\Main.dfm=D:\PROJEKTANA\GRUNTO_TYRIMAS\Main.dfm</Transaction>
+    <Transaction>2015/04/08 15:15:47.000.912,C:\Users\dangis\Documents\RAD Studio\Projects\Main.cpp=D:\PROJEKTANA\GRUNTO_TYRIMAS\Main.cpp</Transaction>
+    <Transaction>2015/04/08 15:21:21.000.198,C:\Users\dangis\Documents\RAD Studio\Projects\Project1.cbproj=D:\PROJEKTANA\GRUNTO_TYRIMAS\Gruntas.cbproj</Transaction>
+    <Transaction>2015/04/08 15:40:45.000.622,=D:\PROJEKTANA\GRUNTO_TYRIMAS\Tserial_event.cpp</Transaction>
+    <Transaction>2015/04/08 15:40:45.000.604,=D:\PROJEKTANA\GRUNTO_TYRIMAS\tserial.cpp</Transaction>
+    <Transaction>2015/04/17 16:37:21.984,=D:\PROJEKTANA\GRUNTO_TYRIMAS\Unit2.cpp</Transaction>
+  </Transactions>
+</BorlandProject>
