@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #ifndef MainH
 #define MainH
@@ -31,9 +31,9 @@ __published:	// IDE-managed Components
 	TPanel *Panel2;
 	TLabel *Label4;
 	TPageControl *tab1;
-	TTabSheet *MATAVIMAS1;
-	TTabSheet *MATAVIMAS2;
-	TTabSheet *MATAVIMAS3;
+	TTabSheet *KOMPRESINIS;
+	TTabSheet *KIRPIMAS;
+	TTabSheet *TREŠIO_SLĖGIO;
 	TListView *ListView1;
 	TTimer *Timer_sampling;
 	TButton *Button_sampling_start;
@@ -66,12 +66,50 @@ __published:	// IDE-managed Components
 	TPanel *Panel6;
 	TLabel *Label11;
 	TLabel *Label12;
-	TEdit *Edit1;
-	TEdit *Edit2;
+	TEdit *Edit_pertankslegis;
+	TEdit *Edit_maxslegis;
 	TPanel *Panel7;
-	TEdit *Edit3;
-	TEdit *Edit4;
-	TEdit *Edit5;
+	TEdit *Edit_poriniokoef;
+	TEdit *Edit_mazinimopagaporin;
+	TEdit *Edit_uzlaikymas;
+	TLabel *Label13;
+	TLabel *Label14;
+	TLabel *Label15;
+	TTimer *Timer_variklio;
+	TEdit *Edit_pauze1;
+	TLabel *Label16;
+	TEdit *Edit_pauze2;
+	TLabel *Label17;
+	TEdit *Edit_gamtinis;
+	TLabel *Label18;
+	TEdit *Edit_pradinisRPM;
+	TLabel *Label19;
+	TEdit *Edit_backRPM;
+	TLabel *Label20;
+	TPanel *Panel8;
+	TEdit *Edit_pvzplotas;
+	TEdit *Edit_koefjegos;
+	TLabel *Label21;
+	TLabel *Label22;
+	TLabel *Label23;
+	TCheckBox *CheckBox_porinio;
+	TTimer *Timer_porinioslegio;
+	TTimer *Timer_uzlaikymo;
+	TTimer *Timer_kompresinis;
+	TTimer *Timer_delay;
+	TPanel *Panel9;
+	TEdit *Edit_RPMpradinis2;
+	TEdit *Edit_maxposlinkis2;
+	TLabel *Label24;
+	TLabel *Label25;
+	TTimer *Timer_sampling2;
+	TPanel *Panel10;
+	TLabel *Label26;
+	TLabel *Label27;
+	TEdit *Edit_RPMpradinis3;
+	TEdit *Edit_maxposlinkis3;
+	TTimer *Timer_sampling3;
+	TTimer *Timer_poslinkio;
 	void __fastcall Button_ConnectClick(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall Timer_monitoringTimer(TObject *Sender);
@@ -86,6 +124,13 @@ __published:	// IDE-managed Components
 	void __fastcall Button5Click(TObject *Sender);
 	void __fastcall Button6Click(TObject *Sender);
 	void __fastcall Button7Click(TObject *Sender);
+	void __fastcall Timer_variklioTimer(TObject *Sender);
+	void __fastcall Timer_porinioslegioTimer(TObject *Sender);
+	void __fastcall Timer_uzlaikymoTimer(TObject *Sender);
+	void __fastcall Timer_kompresinisTimer(TObject *Sender);
+	void __fastcall Timer_delayTimer(TObject *Sender);
+	void __fastcall Timer_sampling2Timer(TObject *Sender);
+	void __fastcall Timer_sampling3Timer(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
@@ -98,3 +143,4 @@ extern PACKAGE TMainForm *MainForm;
 
 
 extern Tserial *com;
+extern unsigned char monitoring_flag;
