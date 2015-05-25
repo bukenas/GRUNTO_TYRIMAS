@@ -7,6 +7,23 @@
 #include "Tserial.h"
 #include "Tserial_event.h"
 #include "GifImg.hpp"
+//#include <windows.h>
+#include <setupapi.h>
+
+#include <string>
+#include <iostream>
+#include <Character.hpp>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdarg.h>
+#include <string.h>
+
+#include <windows.h>
+#include <setupapi.h>
+#include <registry.hpp>
+
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -14,7 +31,7 @@ TMainForm *MainForm;
 
 Tserial *com;
 char sel_port[20];
-
+unsigned int Addr1, Addr2, Addr3, Addr4;
 unsigned char data_send[40], data_variklio[10], data[30],	monitoring_flag=0, flag_uzlaikymo=0, flag_stop=0;
 unsigned int kiek, RPM, counter_uzlaikymo=0, delay_counter=0;
 long samp_interval=60000, laikas=1;
@@ -23,11 +40,13 @@ FILE *f;
 AnsiString Failas;
 float poslinkis, jega;// slegis;
 	TGIFImage *Gif = new TGIFImage;
+	TGIFImage *CW = new TGIFImage;
+	TGIFImage *CCW = new TGIFImage;
 	//TImage *Image1 = new TImage(MainForm);
 	//Image1->Parent = MainForm;
 
 
-float pos1, pos2, slegis;
+float pos1, pos2, pos3, slegis;
 char flag_mask=0, flag_C1;
 
 unsigned int CRC16(unsigned char x, unsigned int Crc);
@@ -39,6 +58,8 @@ void motor_command(float rpm, unsigned char dir);
 __fastcall TMainForm::TMainForm(TComponent* Owner)
 	: TForm(Owner)
 {
+
+
 	int indic=5;
 	unsigned long stat=5;
 
@@ -46,6 +67,10 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 
 		char portas[20];
 		char portonr[3];
+
+	MainForm->Width = 829;
+	MainForm->Height = 764;
+
 
 	for(int p=1;p<99;p++){
 		strcpy(portas,"\\\\.\\COM");
@@ -59,20 +84,25 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 			}
 		}
 	}
-
-
-	ComboBox_sampling->Items->Add("30 s");
-	ComboBox_sampling->Items->Add("1 min");
-	ComboBox_sampling->Items->Add("10 min");
-	ComboBox_sampling->Items->Add("30 min");
-	ComboBox_sampling->ItemIndex=1;
+	Button_addresSET->Click();
+    tab1->ActivePageIndex=0;
+//	ComboBox_sampling->Items->Add("30 s");
+//	ComboBox_sampling->Items->Add("1 min");
+//	ComboBox_sampling->Items->Add("10 min");
+//	ComboBox_sampling->Items->Add("30 min");
+//	ComboBox_sampling->ItemIndex=1;
 	Timer_sampling->Interval=samp_interval;
 
 
 	Gif->LoadFromFile("apskritimas.gif");
 	Gif->Animate=true;
-    Image1->Picture->Assign(Gif);
-
+	Image1->Picture->Assign(Gif);
+	CW->LoadFromFile("animated-arrow-image-0103.gif");
+	CW->Animate=true;
+	Image2->Picture->Assign(CW);
+	CCW->LoadFromFile("animated-arrow-image-0104.gif");
+	CCW->Animate=true;
+	Image3->Picture->Assign(CCW);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::Button_ConnectClick(TObject *Sender)
@@ -169,101 +199,99 @@ void __fastcall TMainForm::Button1Click(TObject *Sender)
 {
 	char str[10];
 	data_send[0]=0xC0;
-	data_send[1]=0x33;
 	data_send[2]=0x02;
 
 	Memo1->Clear();
 	Memo2->Clear();
 	monitoring_flag=1;
 
-	if(send_receive_cmd(data_send,3,8, data)){
-		pos1 = (float)((signed short)(data[3]|data[4]<<8))/100;
-		sprintf(str,"%3.2f",pos1);
-		Label_pos1->Caption=str;
-		flag_C1=0;
+	if(Addr1!=0){
+		data_send[1]=Addr1;//0x33;
+		if(send_receive_cmd(data_send,3,8, data)){
+			pos1 = (float)((signed short)(data[3]|data[4]<<8))/100;
+			sprintf(str,"%3.2f",pos1);
+			Label_pos1->Caption=str;
+			flag_C1=0;
+		}
+		else
+		   Label_pos1->Caption="--";
+		Sleep(2);
 	}
 	else
-	   Label_pos1->Caption="--";
-	Sleep(2);
-	data_send[1]=0x34;
+		Label_pos1->Caption="off";
 
-	if(send_receive_cmd(data_send,3,8, data)){
-		pos2 = ((float)((signed short)(data[3]|data[4]<<8))/100)*StrToFloat(Edit_koefjegos->Text)/StrToFloat(Edit_pvzplotas->Text);
-		sprintf(str,"%3.2f",pos2);
-		Label_pos2->Caption=str;
-		flag_C1=0;
+	if(Addr2!=0){
+		data_send[1]=Addr2;//0x34;
+		if(send_receive_cmd(data_send,3,8, data)){
+			pos2 = ((float)((signed short)(data[3]|data[4]<<8))/100)*StrToFloat(Edit_koefjegos1->Text)/(StrToFloat(Edit_pvzplotas1->Text)/10000)*(-1);
+			sprintf(str,"%3.2f",pos2);
+			Label_pos2->Caption=str;
+			flag_C1=0;
+		}
+		else
+		   Label_pos2->Caption="--";
+		Sleep(2);
 	}
 	else
-	   Label_pos2->Caption="--";
-	Sleep(2);
-	data_send[1]=0x66;
-	if(send_receive_cmd(data_send,3,8, data)){
-		slegis = (float)((signed short)(data[3]|data[4]<<8))/100;
-		sprintf(str,"%3.2f",slegis);
-		Label_slegis->Caption=str;
-		flag_C1=0;
+		Label_pos2->Caption="off";
+
+
+	if(Addr3!=0){
+		data_send[1]=Addr3;//0x34;
+
+		if(send_receive_cmd(data_send,3,8, data)){
+			pos3 = ((float)((signed short)(data[3]|data[4]<<8))/100)*StrToFloat(Edit_koefjegos2->Text)/(StrToFloat(Edit_pvzplotas2->Text)/10000)*(-1);
+			sprintf(str,"%3.2f",pos3);
+			Label_pos3->Caption=str;
+			flag_C1=0;
+		}
+		else
+		   Label_pos3->Caption="--";
+		Sleep(2);
 	}
-	else {
-	   ;//Label_slegis->Caption="--";
+	else
+		Label_pos3->Caption="off";
+
+	if(Addr4!=0){
+		data_send[1]=Addr4;//0x66;
+		if(send_receive_cmd(data_send,3,8, data)){
+			slegis = (float)((signed short)(data[3]|data[4]<<8));
+			sprintf(str,"%3.2f",slegis);
+			Label_slegis->Caption=str;
+			flag_C1=0;
+		}
+		else {
+		   Label_slegis->Caption="--";
+		}
 	}
+	else
+		Label_slegis->Caption="off";
+
 	monitoring_flag=0;
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::Timer_monitoringTimer(TObject *Sender)
 {
-//Button1->Click();
 	TMeasuringTread *matavimothread = new TMeasuringTread (false);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::Button_StopClick(TObject *Sender)
 {
 	motor_command(0,0);
-//	Timer_monitoring->Enabled=false;
-//	Timer_variklio->Enabled=true;
-//	data_variklio[0]=0xC0;
-//	data_variklio[1]=0x01; //reiks pakeisti i adresa
-//	data_variklio[2]=0x04; // stop motor
-
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::Button3Click(TObject *Sender)
 {
-
-//	Timer_monitoring->Enabled=false;
-//
-	RPM=StrToFloat(Edit_RPM->Text.Trim());
-	current_rpm=RPM;
-	motor_command(RPM,1);
-//	data_variklio[0]=0xC0;
-//	data_variklio[1]=0x01; //adresas
-//	data_variklio[2]=0x02; // paleidimo komanda
-//	data_variklio[3]=RPM;
-//	data_variklio[4]=RPM>>8;     //1-290
-//	data_variklio[5]=0x01;  //0 CCW  1 CW
-//	Timer_variklio->Enabled=true;
-//
-//	send_receive_cmd(data_send,6,6, data);
-//	Timer_monitoring->Enabled=true;
+	current_rpm=StrToFloat(Edit_RPM->Text.Trim());//RPM;   // edgaras: vietoj RPM i funkcija motor_command perdaviau current_rpm,
+	motor_command(current_rpm,1);                          // nes buvo nukandama reiksme po kalbelio
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::Button2Click(TObject *Sender)
 {
-
-//	Timer_monitoring->Enabled=false;
-//	Timer_variklio->Enabled=true;
-	RPM = StrToFloat(Edit_RPM->Text.Trim());
-	current_rpm=RPM;
-	motor_command(RPM,0);
-//	data_variklio[0]=0xC0;
-//	data_variklio[1]=0x01; //adresas
-//	data_variklio[2]=0x02; // paleidimo komanda
-//	data_variklio[3]=RPM;
-//	data_variklio[4]=RPM>>8;     //1-290
-//	data_variklio[5]=0x00;  //0 CCW  1 CW
-//	send_receive_cmd(data_send,6,6, data);
-//	Timer_monitoring->Enabled=true;
+	current_rpm=StrToFloat(Edit_RPM->Text.Trim());//RPM;   // edgaras: vietoj RPM i funkcija motor_command perdaviau current_rpm,
+	motor_command(current_rpm,0);                          // nes buvo nukandama reiksme po kalbelio
 }
 //---------------------------------------------------------------------------
 
@@ -306,18 +334,18 @@ void __fastcall TMainForm::Timer_samplingTimer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::ComboBox_samplingChange(TObject *Sender)
-{
-if(ComboBox_sampling->ItemIndex==0)
-	samp_interval=1000;
-if(ComboBox_sampling->ItemIndex==1)
-	samp_interval=60000;
-if(ComboBox_sampling->ItemIndex==2)
-	samp_interval=600000;
-if(ComboBox_sampling->ItemIndex==3)
-	samp_interval=1800000;
-
-}
+//void __fastcall TMainForm::ComboBox_samplingChange(TObject *Sender)
+//{
+//if(ComboBox_sampling->ItemIndex==0)
+//	samp_interval=1000;
+//if(ComboBox_sampling->ItemIndex==1)
+//	samp_interval=60000;
+//if(ComboBox_sampling->ItemIndex==2)
+//	samp_interval=600000;
+//if(ComboBox_sampling->ItemIndex==3)
+//	samp_interval=1800000;
+//
+//}
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::Button_sampling_startClick(TObject *Sender)
@@ -328,7 +356,8 @@ void __fastcall TMainForm::Button_sampling_startClick(TObject *Sender)
 	Button_sampling_start->Enabled=false;
 	Button_sampling_stop->Enabled=true;
 
-
+    laikas=1;
+	flag_stop=0;
 
 	if(tab1->ActivePageIndex==0){
 		RPM=StrToFloat(Edit_pradinisRPM->Text.Trim());
@@ -346,6 +375,7 @@ void __fastcall TMainForm::Button_sampling_startClick(TObject *Sender)
 		motor_command(RPM,1); // paleidziamas variklis
 		Timer_sampling2->Interval=1;
 		Timer_sampling2->Enabled=true;
+		Timer_poslinkio->Enabled=true;
 
 	}
 	if(tab1->ActivePageIndex==2){
@@ -354,9 +384,9 @@ void __fastcall TMainForm::Button_sampling_startClick(TObject *Sender)
 		motor_command(RPM,1); // paleidziamas variklis
 		Timer_sampling3->Interval=1;
 		Timer_sampling3->Enabled=true;
+		Timer_poslinkio->Enabled=true;
 
 	}
-
 
 	Image1->Visible=true;
 }
@@ -388,6 +418,7 @@ void __fastcall TMainForm::Button4Click(TObject *Sender)
 		ListView1->Clear();
 		ListView2->Clear();
 		ListView3->Clear();
+		laikas=1;
 		break;
 	case IDTRYAGAIN:
 		// TODO: add code
@@ -430,13 +461,13 @@ void __fastcall TMainForm::Button5Click(TObject *Sender)
 void __fastcall TMainForm::Button6Click(TObject *Sender)
 {
 	data_send[0]=0xC0;
-	data_send[1]=0x33;
+	data_send[1]=Addr1;
 	data_send[2]=0x03;
 
 	send_receive_cmd(data_send,3,8, data);
-	pos1 = (float)((signed short)(data[3]|data[4]<<8))/100;
-	Label1->Caption=pos1;
-	Memo2->Lines->Add(pos1);
+//	pos1 = (float)((signed short)(data[3]|data[4]<<8))/100;
+//	Label1->Caption=pos1;
+//	Memo2->Lines->Add(pos1);
 	flag_C1=0;
 }
 //---------------------------------------------------------------------------
@@ -444,13 +475,13 @@ void __fastcall TMainForm::Button6Click(TObject *Sender)
 void __fastcall TMainForm::Button7Click(TObject *Sender)
 {
 	data_send[0]=0xC0;
-	data_send[1]=0x34;
+	data_send[1]=Addr2;
 	data_send[2]=0x03;
 
 	send_receive_cmd(data_send,3,8, data);
-	pos1 = (float)((signed short)(data[3]|data[4]<<8))/100;
-	Label1->Caption=pos1;
-	Memo2->Lines->Add(pos1);
+//	pos1 = (float)((signed short)(data[3]|data[4]<<8))/100;
+//	Label1->Caption=pos1;
+//	Memo2->Lines->Add(pos1);
 	flag_C1=0;
 }
 //---------------------------------------------------------------------------
@@ -469,7 +500,7 @@ void __fastcall TMainForm::Timer_variklioTimer(TObject *Sender)
 void __fastcall TMainForm::Timer_porinioslegioTimer(TObject *Sender)
 {
 	if(slegis>pos2*StrToFloat(Edit_poriniokoef->Text) && flag_uzlaikymo==0){
-		Timer_monitoring->Enabled=false;
+		//Timer_monitoring->Enabled=false;
 		counter_uzlaikymo=0;
 		Timer_uzlaikymo->Enabled=true;
 		RPM=current_rpm-current_rpm*StrToFloat(Edit_mazinimopagaporin->Text)/100;   //pamazinamas variklio rpm
@@ -521,6 +552,21 @@ void __fastcall TMainForm::Timer_kompresinisTimer(TObject *Sender)
 	if(flag_stop==4 && pos2>StrToFloat(Edit_maxslegis->Text)){
 		motor_command(0,0);
 		flag_stop=5;
+		delay_counter=0;
+		Timer_delay->Enabled=true;
+	}
+	if(flag_stop==5 && delay_counter>StrToFloat(Edit_pauze3->Text)*60){   //laukiam
+		Timer_delay->Enabled=false;
+		flag_stop=6;
+		RPM=StrToFloat(Edit_finalRPM->Text);
+		motor_command(RPM,0); //dar kartą atgal (ir paskutinį)
+	}
+	if(pos2<StrToFloat(Edit_gamtinis->Text) && flag_stop==6){
+		motor_command(0,0);
+		delay_counter=0;
+		flag_stop=7;
+		Button_sampling_stop->Click();
+		//Timer_delay->Enabled=true;
 	}
 
 }
@@ -531,13 +577,32 @@ void motor_command(float rpm, unsigned char dir){
 	current_rpm=RPM;
 	data_variklio[0]=0xC0;
 	data_variklio[1]=0x01; //adresas
-	if(rpm==0)
-		data_variklio[2]=0x04; // paleidimo komanda
-	else
-		data_variklio[2]=0x02; // paleidimo komanda
-	data_variklio[3]=RPM;
-	data_variklio[4]=RPM>>8;     //1-290
-	data_variklio[5]=dir;  //0 CCW  1 CW
+	if (dir==2) {
+		data_variklio[2]=0x0C; // stabdymo komanda
+		MainForm->Image2->Visible=false;
+		MainForm->Image3->Visible=false;
+	}
+	else{
+		if(rpm==0){
+			data_variklio[2]=0x04; // stabdymo komanda
+			MainForm->Image2->Visible=false;
+			MainForm->Image3->Visible=false;
+		}
+		else {
+			data_variklio[2]=0x02; // paleidimo komanda
+			data_variklio[3]=RPM;
+			data_variklio[4]=RPM>>8;     //1-290
+			data_variklio[5]=dir;  //0 CCW  1 CW
+			if(dir==1) {
+				MainForm->Image3->Visible=false;
+				MainForm->Image2->Visible=true;
+			}
+			if(dir==0) {
+				MainForm->Image2->Visible=false;
+				MainForm->Image3->Visible=true;
+			}
+		}
+	}
 	MainForm->Timer_variklio->Enabled=true;
 }
 
@@ -559,7 +624,7 @@ void __fastcall TMainForm::Timer_sampling2Timer(TObject *Sender)
 
 	TListItem  *ListItem = ListView2->Items->Item[ListView2->Items->Count-1];
 	f = fopen(Failas.c_str(), "a+");
-	//Button1->Click();
+
 	ListItem=this->ListView2->Items->Add();
 	ListItem->Caption = dtPresent;
 	ListItem->SubItems->Add(laikas);
@@ -568,12 +633,14 @@ void __fastcall TMainForm::Timer_sampling2Timer(TObject *Sender)
 	ListItem->SubItems->Add(str);
 	sprintf(str,"%2.2f",pos2);
 	ListItem->SubItems->Add(str);
+	sprintf(str,"%2.2f",pos3);
+	ListItem->SubItems->Add(str);
 
 
 	int s = ListItem->Top - ListView2->TopItem->Top;
 	ListView2->Scroll(NULL, s);
 
-	fprintf(f,"%d-%d-%d %d:%d:%d, %d, %3.2f, %3.2f\n",Year, Month, Day, Hour, Min, Sec, laikas,(float)pos1,(float)pos2);
+	fprintf(f,"%d-%d-%d %d:%d:%d, %d, %3.2f, %3.2, %3.2f\n",Year, Month, Day, Hour, Min, Sec, laikas,(float)pos1,(float)pos2,(float)pos3);
 	fclose(f);
 	laikas++; // virtualus laikas delta T
 	Timer_sampling2->Interval=samp_interval;
@@ -604,13 +671,125 @@ void __fastcall TMainForm::Timer_sampling3Timer(TObject *Sender)
 
 
 	int s = ListItem->Top - ListView3->TopItem->Top;
-	ListView2->Scroll(NULL, s);
+	ListView3->Scroll(NULL, s);
 
 	fprintf(f,"%d-%d-%d %d:%d:%d, %d, %3.2f, %3.2f\n",Year, Month, Day, Hour, Min, Sec, laikas,(float)pos1,(float)pos2);
 	fclose(f);
 	laikas++; // virtualus laikas delta T
 	Timer_sampling3->Interval=samp_interval;
 	Timer_monitoring->Enabled=true;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::Timer_poslinkioTimer(TObject *Sender)
+{
+	if(tab1->ActivePageIndex==1)
+		if(pos1>StrToFloat(Edit_maxposlinkis2->Text)){
+			motor_command(0,0);
+			Button_sampling_stop->Click();
+		}
+	if(tab1->ActivePageIndex==2)
+		if(pos1>StrToFloat(Edit_maxposlinkis3->Text)){
+			motor_command(0,0);
+			Button_sampling_stop->Click();
+		}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Button9Click(TObject *Sender)
+{
+	UnicodeString fail;   //	FILE *FSave;
+	if (SaveDialog1->Execute())
+	{
+		fail=ExtractFilePath(ParamStr(0))+"crez.txt";
+		CopyFileW(fail.w_str(), SaveDialog1->FileName.w_str(), FALSE);
+	}
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::Edit_samplingintervalChange(TObject *Sender)
+{
+	samp_interval=StrToFloat(Edit_samplinginterval->Text)*60000;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Button_addresSETClick(TObject *Sender)
+{
+	Addr1=StrToInt(Edit_Addr1->Text);
+	Addr2=StrToInt(Edit_Addr2->Text);
+	Addr3=StrToInt(Edit_Addr3->Text);
+	Addr4=StrToInt(Edit_Addr4->Text);
+}
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TMainForm::Button10Click(TObject *Sender)
+{
+	data_send[0]=0xC0;
+	data_send[1]=Addr3;
+	data_send[2]=0x03;
+
+	send_receive_cmd(data_send,3,8, data);
+//	pos1 = (float)((signed short)(data[3]|data[4]<<8))/100;
+//	Label1->Caption=pos1;
+//	Memo2->Lines->Add(pos1);
+	flag_C1=0;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::FormClose(TObject *Sender, TCloseAction &Action)
+{
+	//Failas=ExtractFilePath(ParamStr(0))+"preset.txt";
+	//f = fopen(Failas.c_str(), "a+");
+   //	fprintf(f,"%f, %f, %f\n",Edit_pradinisRPM->Text.ToDouble(), Edit_pertankslegis->Text.ToDouble(),Edit_pauze1->Text.ToDouble());
+   //	fclose(f);
+
+
+	TIniFile* ini = new TIniFile(GetCurrentDir()+"\\preset.ini");
+	if( ini == NULL ){
+		ShowMessage("The file could not be opened");
+		return;
+		}
+	else {
+		ini->WriteFloat("Settings","PradinisRPM",Edit_pradinisRPM->Text.ToDouble());
+		ini->WriteFloat("Settings","Pertankslegis",Edit_pertankslegis->Text.ToDouble());
+		ini->WriteFloat("Settings","pauze1",Edit_pauze1->Text.ToDouble());
+        ini->WriteFloat("Settings","backRPM",Edit_backRPM->Text.ToDouble());
+		ini->WriteFloat("Settings","gamtinis",Edit_gamtinis->Text.ToDouble());
+
+		ini->WriteFloat("Settings","Pertankslegis",Edit_pertankslegis->Text.ToDouble());
+		ini->WriteFloat("Settings","Pertankslegis",Edit_pertankslegis->Text.ToDouble());
+		ini->WriteFloat("Settings","Pertankslegis",Edit_pertankslegis->Text.ToDouble());
+		ini->WriteFloat("Settings","Pertankslegis",Edit_pertankslegis->Text.ToDouble());
+		ini->WriteFloat("Settings","Pertankslegis",Edit_pertankslegis->Text.ToDouble());
+		ini->WriteFloat("Settings","Pertankslegis",Edit_pertankslegis->Text.ToDouble());
+
+	delete ini;
+	}
+
+}
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TMainForm::FormActivate(TObject *Sender)
+{
+	TIniFile* ini = new TIniFile(GetCurrentDir()+"\\preset.ini");
+	Edit_pradinisRPM->Text=ini->ReadFloat("Settings","PradinisRPM",0);
+	Edit_pertankslegis->Text=ini->ReadFloat("Settings","Pertankslegis",0);
+	Edit_pauze1->Text=ini->ReadFloat("Settings","pauze1",0);
+	Edit_backRPM->Text=ini->ReadFloat("Settings","backRPM",0);
+	Edit_gamtinis->Text=ini->ReadFloat("Settings","gamtinis",0);
+
+	Edit_pradinisRPM->Text=ini->ReadFloat("Settings","PradinisRPM",0);
+	Edit_pradinisRPM->Text=ini->ReadFloat("Settings","PradinisRPM",0);
+	Edit_pradinisRPM->Text=ini->ReadFloat("Settings","PradinisRPM",0);
+	Edit_pradinisRPM->Text=ini->ReadFloat("Settings","PradinisRPM",0);
+
+	delete ini;
 }
 //---------------------------------------------------------------------------
 

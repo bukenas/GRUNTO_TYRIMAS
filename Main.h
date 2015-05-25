@@ -13,6 +13,7 @@
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Dialogs.hpp>
 #include <Vcl.Imaging.GIFImg.hpp>
+#include <Vcl.Imaging.pngimage.hpp>
 //---------------------------------------------------------------------------
 class TMainForm : public TForm
 {
@@ -49,7 +50,6 @@ __published:	// IDE-managed Components
 	TPanel *Panel4;
 	TButton *Button6;
 	TButton *Button7;
-	TComboBox *ComboBox_sampling;
 	TLabel *Label6;
 	TLabel *Label7;
 	TLabel *Label8;
@@ -59,7 +59,6 @@ __published:	// IDE-managed Components
 	TLabel *Label9;
 	TLabel *Label10;
 	TPanel *Panel5;
-	TButton *Button4;
 	TButton *Button8;
 	TListView *ListView2;
 	TListView *ListView3;
@@ -87,8 +86,8 @@ __published:	// IDE-managed Components
 	TEdit *Edit_backRPM;
 	TLabel *Label20;
 	TPanel *Panel8;
-	TEdit *Edit_pvzplotas;
-	TEdit *Edit_koefjegos;
+	TEdit *Edit_pvzplotas1;
+	TEdit *Edit_koefjegos1;
 	TLabel *Label21;
 	TLabel *Label22;
 	TLabel *Label23;
@@ -110,6 +109,29 @@ __published:	// IDE-managed Components
 	TEdit *Edit_maxposlinkis3;
 	TTimer *Timer_sampling3;
 	TTimer *Timer_poslinkio;
+	TImage *Image2;
+	TImage *Image3;
+	TButton *Button9;
+	TImage *Image4;
+	TEdit *Edit_finalRPM;
+	TEdit *Edit_pauze3;
+	TLabel *Label28;
+	TLabel *Label29;
+	TEdit *Edit_samplinginterval;
+	TLabel *Label30;
+	TLabel *Label_pos3;
+	TPanel *Panel11;
+	TEdit *Edit_Addr1;
+	TEdit *Edit_Addr2;
+	TEdit *Edit_Addr3;
+	TEdit *Edit_Addr4;
+	TButton *Button_addresSET;
+	TLabel *Label31;
+	TLabel *Label32;
+	TEdit *Edit_pvzplotas2;
+	TEdit *Edit_koefjegos2;
+	TImage *Image5;
+	TButton *Button10;
 	void __fastcall Button_ConnectClick(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall Timer_monitoringTimer(TObject *Sender);
@@ -117,7 +139,7 @@ __published:	// IDE-managed Components
 	void __fastcall Button3Click(TObject *Sender);
 	void __fastcall Button2Click(TObject *Sender);
 	void __fastcall Timer_samplingTimer(TObject *Sender);
-	void __fastcall ComboBox_samplingChange(TObject *Sender);
+	//void __fastcall ComboBox_samplingChange(TObject *Sender);
 	void __fastcall Button_sampling_startClick(TObject *Sender);
 	void __fastcall Button_sampling_stopClick(TObject *Sender);
 	void __fastcall Button4Click(TObject *Sender);
@@ -131,6 +153,13 @@ __published:	// IDE-managed Components
 	void __fastcall Timer_delayTimer(TObject *Sender);
 	void __fastcall Timer_sampling2Timer(TObject *Sender);
 	void __fastcall Timer_sampling3Timer(TObject *Sender);
+	void __fastcall Timer_poslinkioTimer(TObject *Sender);
+	void __fastcall Button9Click(TObject *Sender);
+	void __fastcall Edit_samplingintervalChange(TObject *Sender);
+	void __fastcall Button_addresSETClick(TObject *Sender);
+	void __fastcall Button10Click(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+	void __fastcall FormActivate(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
