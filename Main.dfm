@@ -3,7 +3,7 @@
   Top = 0
   Caption = 'GRUNTO TYRIMAS'
   ClientHeight = 725
-  ClientWidth = 1042
+  ClientWidth = 1263
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -506,8 +506,8 @@
     TabOrder = 0
   end
   object Button1: TButton
-    Left = 920
-    Top = 25
+    Left = 1096
+    Top = 29
     Width = 75
     Height = 25
     Caption = 'Monitoring'
@@ -521,8 +521,8 @@
     Height = 132
     TabOrder = 2
     object Label2: TLabel
-      Left = 181
-      Top = 8
+      Left = 239
+      Top = 32
       Width = 70
       Height = 13
       Caption = 'rpm(0.02-500)'
@@ -582,12 +582,61 @@
       OnClick = Button_StopClick
     end
     object Edit_RPM: TEdit
-      Left = 176
-      Top = 27
-      Width = 75
+      Left = 189
+      Top = 32
+      Width = 44
       Height = 21
       TabOrder = 3
       Text = '1'
+    end
+    object CheckBox_variklio: TCheckBox
+      Left = 19
+      Top = 32
+      Width = 97
+      Height = 17
+      Caption = 'Tiesiogine kryptis'
+      Checked = True
+      State = cbChecked
+      TabOrder = 4
+      OnClick = CheckBox_variklioClick
+    end
+    object Panel12: TPanel
+      Left = 82
+      Top = 0
+      Width = 240
+      Height = 23
+      TabOrder = 5
+      object Label_speed: TLabel
+        Left = 99
+        Top = 6
+        Width = 20
+        Height = 13
+        Caption = '----'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Panel_left: TPanel
+        Left = 0
+        Top = 0
+        Width = 23
+        Height = 23
+        Color = clSilver
+        ParentBackground = False
+        TabOrder = 0
+      end
+      object Panel_right: TPanel
+        Left = 217
+        Top = 0
+        Width = 23
+        Height = 23
+        Color = clSilver
+        ParentBackground = False
+        TabOrder = 1
+      end
     end
   end
   object Panel2: TPanel
@@ -656,7 +705,7 @@
     Left = 336
     Top = 8
     Width = 474
-    Height = 656
+    Height = 660
     ActivePage = KOMPRESINIS
     TabOrder = 4
     object KOMPRESINIS: TTabSheet
@@ -703,7 +752,7 @@
         Left = -4
         Top = 422
         Width = 467
-        Height = 124
+        Height = 129
         ParentBackground = False
         TabOrder = 1
         object Label11: TLabel
@@ -854,9 +903,9 @@
       end
       object Panel7: TPanel
         Left = -4
-        Top = 552
+        Top = 555
         Width = 467
-        Height = 74
+        Height = 76
         ParentBackground = False
         TabOrder = 2
         object Label13: TLabel
@@ -889,7 +938,7 @@
           Text = '0.1'
         end
         object Edit_mazinimopagaporin: TEdit
-          Left = 200
+          Left = 184
           Top = 46
           Width = 50
           Height = 21
@@ -917,6 +966,7 @@
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 3
+          OnClick = CheckBox_porinioClick
         end
       end
     end
@@ -1131,7 +1181,7 @@
     TabOrder = 7
     object Label6: TLabel
       Left = 14
-      Top = 95
+      Top = 96
       Width = 62
       Height = 13
       Caption = 'Poslinkis, mm'
@@ -1273,12 +1323,12 @@
         Text = '0'
       end
       object Edit_Addr4: TEdit
-        Left = 266
+        Left = 267
         Top = 12
         Width = 30
         Height = 21
         TabOrder = 3
-        Text = '0'
+        Text = '101'
       end
       object Button_addresSET: TButton
         Left = 47

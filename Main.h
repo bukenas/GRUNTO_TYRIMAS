@@ -132,6 +132,11 @@ __published:	// IDE-managed Components
 	TEdit *Edit_koefjegos2;
 	TImage *Image5;
 	TButton *Button10;
+	TCheckBox *CheckBox_variklio;
+	TPanel *Panel12;
+	TLabel *Label_speed;
+	TPanel *Panel_left;
+	TPanel *Panel_right;
 	void __fastcall Button_ConnectClick(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall Timer_monitoringTimer(TObject *Sender);
@@ -160,6 +165,8 @@ __published:	// IDE-managed Components
 	void __fastcall Button10Click(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormActivate(TObject *Sender);
+	void __fastcall CheckBox_variklioClick(TObject *Sender);
+	void __fastcall CheckBox_porinioClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
