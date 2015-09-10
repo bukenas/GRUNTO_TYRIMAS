@@ -137,6 +137,8 @@ __published:	// IDE-managed Components
 	TLabel *Label_speed;
 	TPanel *Panel_left;
 	TPanel *Panel_right;
+	TPanel *Panel13;
+	TPanel *Panel14;
 	void __fastcall Button_ConnectClick(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall Timer_monitoringTimer(TObject *Sender);
@@ -167,6 +169,8 @@ __published:	// IDE-managed Components
 	void __fastcall FormActivate(TObject *Sender);
 	void __fastcall CheckBox_variklioClick(TObject *Sender);
 	void __fastcall CheckBox_porinioClick(TObject *Sender);
+	void __fastcall Button11Click(TObject *Sender);
+
 private:	// User declarations
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);

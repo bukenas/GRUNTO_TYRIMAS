@@ -496,8 +496,8 @@
     Caption = 'Label1'
   end
   object Memo1: TMemo
-    Left = 920
-    Top = 56
+    Left = 928
+    Top = 20
     Width = 185
     Height = 697
     Lines.Strings = (
@@ -743,6 +743,7 @@
           end>
         ColumnClick = False
         GridLines = True
+        Items.ItemData = {}
         ReadOnly = True
         RowSelect = True
         TabOrder = 0
@@ -968,6 +969,15 @@
           TabOrder = 3
           OnClick = CheckBox_porinioClick
         end
+        object Panel14: TPanel
+          Left = 428
+          Top = 6
+          Width = 33
+          Height = 5
+          Color = clGreen
+          ParentBackground = False
+          TabOrder = 4
+        end
       end
     end
     object KIRPIMAS: TTabSheet
@@ -1004,6 +1014,7 @@
           end>
         ColumnClick = False
         GridLines = True
+        Items.ItemData = {}
         ReadOnly = True
         RowSelect = True
         TabOrder = 0
@@ -1049,7 +1060,7 @@
       end
     end
     object TREŠIO_SLĖGIO: TTabSheet
-      Caption = 'TRE'#352'IO_SL'#278'GIO'
+      Caption = 'TRIA'#352'IO_SL'#278'GIO'
       ImageIndex = 2
       object ListView3: TListView
         Left = 43
@@ -1078,6 +1089,7 @@
           end>
         ColumnClick = False
         GridLines = True
+        Items.ItemData = {}
         ReadOnly = True
         RowSelect = True
         TabOrder = 0
@@ -1145,7 +1157,7 @@
       Text = 'Select port'
     end
     object Button_Connect: TButton
-      Left = 181
+      Left = 190
       Top = 10
       Width = 117
       Height = 40
@@ -1348,6 +1360,15 @@
       Caption = 'Zero 3'
       TabOrder = 3
       OnClick = Button10Click
+    end
+    object Panel13: TPanel
+      Left = 292
+      Top = 156
+      Width = 20
+      Height = 20
+      Color = clRed
+      ParentBackground = False
+      TabOrder = 4
     end
   end
   object Panel5: TPanel
@@ -1573,7 +1594,6 @@
   end
   object Timer_monitoring: TTimer
     Enabled = False
-    Interval = 500
     OnTimer = Timer_monitoringTimer
     Left = 856
     Top = 448
@@ -1599,6 +1619,7 @@
   end
   object Timer_porinioslegio: TTimer
     Enabled = False
+    Interval = 2000
     OnTimer = Timer_porinioslegioTimer
     Left = 992
     Top = 448
