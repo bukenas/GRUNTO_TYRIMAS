@@ -706,7 +706,7 @@
     Top = 8
     Width = 474
     Height = 660
-    ActivePage = KOMPRESINIS
+    ActivePage = TabSheet1
     TabOrder = 4
     object KOMPRESINIS: TTabSheet
       Caption = 'KOMPRESINIS'
@@ -743,7 +743,6 @@
           end>
         ColumnClick = False
         GridLines = True
-        Items.ItemData = {}
         ReadOnly = True
         RowSelect = True
         TabOrder = 0
@@ -1014,7 +1013,6 @@
           end>
         ColumnClick = False
         GridLines = True
-        Items.ItemData = {}
         ReadOnly = True
         RowSelect = True
         TabOrder = 0
@@ -1089,7 +1087,6 @@
           end>
         ColumnClick = False
         GridLines = True
-        Items.ItemData = {}
         ReadOnly = True
         RowSelect = True
         TabOrder = 0
@@ -1132,6 +1129,42 @@
           TabOrder = 1
           Text = '8'
         end
+      end
+    end
+    object TabSheet1: TTabSheet
+      Caption = 'KOMERCINIS'
+      ImageIndex = 3
+      object ListView4: TListView
+        Left = 3
+        Top = 3
+        Width = 350
+        Height = 508
+        Columns = <
+          item
+            Caption = 'Data Laikas'
+            Width = 130
+          end
+          item
+            Alignment = taCenter
+            Caption = 'Nr.'
+            Width = 40
+          end
+          item
+            Alignment = taCenter
+            Caption = 'Poslinkis, mm'
+            Width = 80
+          end
+          item
+            Alignment = taCenter
+            Caption = #302'tempimas, kPa'
+            Width = 90
+          end>
+        ColumnClick = False
+        GridLines = True
+        ReadOnly = True
+        RowSelect = True
+        TabOrder = 0
+        ViewStyle = vsReport
       end
     end
   end
@@ -1659,5 +1692,10 @@
     OnTimer = Timer_poslinkioTimer
     Left = 984
     Top = 240
+  end
+  object Timer_komercinis: TTimer
+    Enabled = False
+    Left = 992
+    Top = 320
   end
 end

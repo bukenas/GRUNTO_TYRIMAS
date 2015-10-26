@@ -122,7 +122,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject *Sender)
 		Label5->Caption="CONNECTED";
 		//Label5->Left = Label5->Left+15;
 		Label5->Font->Color=clGreen;
-		Timer_monitoring->Enabled=true;
+		//Timer_monitoring->Enabled=true;
 	}
 	else{
 		Label5->Caption="NOT CONNECTED";
@@ -335,7 +335,7 @@ void __fastcall TMainForm::Button1Click(TObject *Sender)
 				flag_C1=0;
 			}
 			else {
-			   Label_slegis->Caption="--";
+			   Label_speed->Caption="--";
 			}
 		}
 		else
@@ -1010,6 +1010,7 @@ void __fastcall TMainForm::Button11Click(TObject *Sender)
 com->disconnect();
 }
 //---------------------------------------------------------------------------
+
 
 
 

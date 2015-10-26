@@ -139,6 +139,9 @@ __published:	// IDE-managed Components
 	TPanel *Panel_right;
 	TPanel *Panel13;
 	TPanel *Panel14;
+	TTabSheet *TabSheet1;
+	TListView *ListView4;
+	TTimer *Timer_komercinis;
 	void __fastcall Button_ConnectClick(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall Timer_monitoringTimer(TObject *Sender);
